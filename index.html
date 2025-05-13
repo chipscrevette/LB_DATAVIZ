@@ -194,65 +194,199 @@
     }
 
     .chart-source a {
-  text-decoration: underline dotted;
-  color: #666;
-}
+      text-decoration: underline dotted;
+      color: #666;
+    }
 
-.chart-source {
-  position: absolute;
-  bottom: 10px;
-  left: 20px;
-  font-size: 11px;
-  color: #666;
-  font-style: italic;
-  font-weight: 300;
-}
+    .chart-source {
+      position: absolute;
+      bottom: 10px;
+      left: 20px;
+      font-size: 11px;
+      color: #666;
+      font-style: italic;
+      font-weight: 300;
+    }
 
-.live-stats {
-  position: absolute;
-  top: 140px;
-  right: 100px;
-  font-size: 20px;
-  font-weight: 400;
-  display: flex;
-  gap: 0.6em;
-}
+    .live-stats {
+      position: absolute;
+      top: 140px;
+      right: 100px;
+      font-size: 20px;
+      font-weight: 400;
+      display: flex;
+      gap: 0.6em;
+    }
 
-.live-stats span {
-  padding: 0.2em 0.5em;
-}
+    .live-stats span {
+      padding: 0.2em 0.5em;
+    }
 
-span.points {
-  background-color: #FF6B6B;
-  color: white;
-}
+    span.points {
+      background-color: #FF6B6B;
+      color: white;
+    }
 
-span.rebounds {
-  background-color: #48BB78;
-  color: white;
-}
+    span.rebounds {
+      background-color: #48BB78;
+      color: white;
+    }
 
-span.assists {
-  background-color: #4299E1;
-  color: white;
-}
+    span.assists {
+      background-color: #4299E1;
+      color: white;
+    }
 
-
-
+    /* Media Queries pour mobile */
+    @media (max-width: 768px) {
+      .chart-container {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        padding: 0 10px;
+      }
+      
+      .chart-header {
+        padding: 15px 15px 5px;
+      }
+      
+      .chart-title {
+        font-size: 20px;
+        letter-spacing: -0.5px;
+        line-height: 1.2;
+        margin-bottom: 2px;
+      }
+      
+      .chart-title span.points,
+      .chart-title span.rebounds,
+      .chart-title span.assists {
+        display: block;
+        width: auto;
+        margin: 5px 0;
+        padding: 0.1em 0.5em;
+        font-size: 16px;
+        text-align: center;
+      }
+      
+      .chart-subtitle {
+        font-size: 11px;
+        margin-top: 3px;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+      }
+      
+      #chart {
+        flex: 1;
+        height: 70vh;
+        position: relative;
+        margin-left: -15px;
+        margin-right: -15px;
+      }
+      
+      .live-stats {
+        position: fixed;
+        bottom: 40px;
+        left: 0;
+        right: 0;
+        top: auto;
+        display: flex;
+        justify-content: center;
+        font-size: 15px;
+        gap: 0.5em;
+        z-index: 30;
+      }
+      
+      .game-info {
+        position: fixed;
+        bottom: 5px;
+        right: 10px;
+        text-align: right;
+        z-index: 25;
+      }
+      
+      .current-game {
+        font-size: 16px;
+      }
+      
+      .game-phase {
+        font-size: 11px;
+      }
+      
+      .legend {
+        display: none;
+      }
+      
+      .y-axis text {
+        font-size: 8px;
+      }
+      
+      .article-info {
+        position: fixed;
+        bottom: 530px;
+        left: 80px;
+        right: 10px;
+        top: auto;
+        width: 65%;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 12px;
+        max-height: 30%;
+        overflow-y: auto;
+        z-index: 20;
+      }
+      
+      .article-date {
+        font-size: 11px;
+        margin-bottom: 2px;
+      }
+      
+      .article-stats {
+        font-size: 10px;
+        margin-bottom: 2px;
+        display: block;
+      }
+      
+      .article-title {
+        font-size: 14px;
+        margin-bottom: 5px;
+      }
+      
+      .article-content {
+        font-size: 12px;
+        line-height: 1.3;
+      }
+      
+      .chart-source {
+        font-size: 8px;
+        bottom: 5px;
+        left: 10px;
+      }
+      
+      .scroll-spacer {
+        height: 50vh;
+        min-height: 300px;
+      }
+      
+      .end-spacer {
+        height: 20vh;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="chart-container">
     <div class="chart-header">
       <h1 class="chart-title">
-        LeBron James 2017-2018 : <span class="points">Points</span>, <span class="rebounds">Rebonds</span> et <span class="assists">Passes</span> par match
+        LEBRON JAMES 2017-2018
+        <span class="points">POINTS</span>
+        <span class="rebounds">REBONDS</span>
+        <span class="assists">PASSES</span>
+        <span class="par-match">PAR MATCH</span>
       </h1>
-      <p class="chart-subtitle">Comparaison avec les moyennes du Top 10 NBA dans chaque catégorie</p>
+      <p class="chart-subtitle">COMPARAISON AVEC LES MOYENNES DU TOP 10 NBA DANS CHAQUE CATÉGORIE</p>
     </div>
 
-    
     <div id="chart"></div>
-    
     <div id="article-container"></div>
     
     <div class="game-info">
@@ -277,14 +411,11 @@ span.assists {
       <span class="assists">-- ast</span>
     </div>    
     
-
     <p class="chart-source">
       Source : <a href="https://www.basketball-reference.com/" target="_blank" rel="noopener">basketball-reference.com</a> | Réalisation : LU CONG SANG Kévin
     </p>    
-    
   </div>
 
-  <!-- Le reste du scroll -->
   <div class="scroll-spacer"></div>
   <div class="scroll-spacer"></div>
   <div class="scroll-spacer"></div>
@@ -297,101 +428,21 @@ span.assists {
   <script>
     // Moyennes du Top 10 NBA
     const top10Averages = {
-      points: 26.22,    // Moyenne du Top 10 marqueurs (James Harden leader à 30.4)
-      assists: 8.03,   // Moyenne du Top 10 passeurs (Russell Westbrook leader à 10.3)
-      rebounds: 12.07   // Moyenne du Top 10 rebondeurs (Andre Drummond leader à 16.0)
+      points: 26.22,
+      assists: 8.03,
+      rebounds: 12.07
     };
 
-    // Points importants de la saison 2017-18 de LeBron
+    // Points importants de la saison
     const gameEvents = [
-      {
-        game: 1,
-        date: "17/10/2017",
-        opponent: "vs Boston Celtics",
-        stats: "29 pts • 16 reb • 9 ast • Victoire 102-99",
-        title: "Ouverture de saison dramatique",
-        content: "LeBron retrouve Kyrie Irving, qui l'a quitté pendant l'été, mais la soirée est marquée par la terrible blessure de Gordon Hayward. Malgré un triple-double frôlé, les Cavs s'imposent face aux Celtics.",
-        gameDay: "Opening Night",
-        phase: "Saison Régulière",
-        dataIndex: 0
-      },
-      {
-        game: 9,
-        date: "03/11/2017",
-        opponent: "vs Washington Wizards",
-        stats: "57 pts • 11 reb • 7 ast • Victoire 130-122",
-        title: "Explosion offensive contre Washington",
-        content: "Performance historique de LeBron avec 57 points (23/34 aux tirs), son 2ème meilleur total en carrière. Il démontre qu'il reste une force offensive dominante malgré les changements dans l'effectif des Cavs.",
-        gameDay: "Match 9",
-        phase: "Saison Régulière",
-        dataIndex: 8
-      },
-      {
-        game: 28,
-        date: "14/12/2017",
-        opponent: "vs Lakers",
-        stats: "25 pts • 12 reb • 12 ast • Victoire 121-112",
-        title: "Une série de victoires impressionnante",
-        content: "LeBron enregistre son 59e triple-double en carrière contre les Lakers. Les Cavs sont au milieu d'une série de 13 victoires consécutives qui redresse leur saison après un début difficile.",
-        gameDay: "Match 28",
-        phase: "Saison Régulière",
-        dataIndex: 27
-      },
-      {
-        game: 53,
-        date: "07/02/2018",
-        opponent: "vs Minnesota",
-        stats: "37 pts • 10 reb • 15 ast • Victoire 140-138 (OT)",
-        title: "Métamorphose après la trade deadline",
-        content: "Avec une équipe totalement remaniée après les trades, LeBron semble libéré. Il réalise un triple-double avec 37 points et 15 passes, illustrant la nouvelle dynamique positive des Cavs.",
-        gameDay: "Nouvelle équipe",
-        phase: "Saison Régulière",
-        dataIndex: 52
-      },
-      {
-        game: 82,
-        date: "11/04/2018",
-        opponent: "vs Knicks",
-        stats: "10 pts • 5 reb • 7 ast • Défaite 98-110",
-        title: "Mission accomplie : 82 matchs joués",
-        content: "Pour la première fois de sa carrière, LeBron joue les 82 matchs de la saison régulière. À 33 ans, il termine avec des moyennes de 27.5 points, 8.6 rebonds et 9.1 passes.",
-        gameDay: "Match 82",
-        phase: "Fin de Saison Régulière",
-        dataIndex: 81
-      },
-      {
-        game: 100,
-        date: "05/05/2018",
-        opponent: "vs Raptors (Game 3)",
-        stats: "38 pts • 6 reb • 7 ast • Victoire 105-103",
-        title: "Le tir impossible contre Toronto",
-        content: "Buzzer beater iconique de LeBron : un floater en courant sur la ligne de fond, banké à la planche. Ce tir donne une avance de 3-0 aux Cavs et brise psychologiquement les Raptors.",
-        gameDay: "G3 vs Raptors",
-        phase: "Playoffs",
-        dataIndex: 99
-      },
-      {
-        game: 106,
-        date: "27/05/2018",
-        opponent: "vs Celtics (Game 7)",
-        stats: "35 pts • 15 reb • 9 ast • Victoire 87-79",
-        title: "La 8ème finale consécutive",
-        content: "Dans un Game 7 épique à Boston, LeBron, épuisé après avoir joué les 48 minutes, porte les Cavs vers une 8ème finale NBA consécutive, confirmant sa domination sur la Conférence Est.",
-        gameDay: "G7 vs Boston",
-        phase: "Finales de Conférence",
-        dataIndex: 105
-      },
-      {
-      game: 110,
-      date: "08/06/2018",
-      opponent: "vs Warriors (Game 4)",
-      stats: "33 pts • 10 reb • 11 ast • Défaite 108-85",
-      title: "Fin du parcours 2018",
-      content: "LeBron termine sa saison incroyable avec un dernier triple-double. Les Cavs sont balayés par les Warriors, mais James laisse une trace indélébile avec 34.0 pts, 9.1 reb, 9.0 ast sur l’ensemble des playoffs.",
-      gameDay: "Finale NBA - G4",
-      phase: "Finales NBA",
-      dataIndex: 109
-    }
+      { game: 1, date: "17/10/2017", opponent: "vs Boston Celtics", stats: "29 pts • 16 reb • 9 ast • Victoire 102-99", title: "Ouverture de saison dramatique", content: "LeBron retrouve Kyrie Irving, qui l'a quitté pendant l'été, mais la soirée est marquée par la terrible blessure de Gordon Hayward. Malgré un triple-double frôlé, les Cavs s'imposent face aux Celtics.", gameDay: "Opening Night", phase: "Saison Régulière", dataIndex: 0 },
+      { game: 9, date: "03/11/2017", opponent: "vs Washington Wizards", stats: "57 pts • 11 reb • 7 ast • Victoire 130-122", title: "Explosion offensive contre Washington", content: "Performance historique de LeBron avec 57 points (23/34 aux tirs), son 2ème meilleur total en carrière. Il démontre qu'il reste une force offensive dominante malgré les changements dans l'effectif des Cavs.", gameDay: "Match 9", phase: "Saison Régulière", dataIndex: 8 },
+      { game: 28, date: "14/12/2017", opponent: "vs Lakers", stats: "25 pts • 12 reb • 12 ast • Victoire 121-112", title: "Une série de victoires impressionnante", content: "LeBron enregistre son 59e triple-double en carrière contre les Lakers. Les Cavs sont au milieu d'une série de 13 victoires consécutives qui redresse leur saison après un début difficile.", gameDay: "Match 28", phase: "Saison Régulière", dataIndex: 27 },
+      { game: 53, date: "07/02/2018", opponent: "vs Minnesota", stats: "37 pts • 10 reb • 15 ast • Victoire 140-138 (OT)", title: "Métamorphose après la trade deadline", content: "Avec une équipe totalement remaniée après les trades, LeBron semble libéré. Il réalise un triple-double avec 37 points et 15 passes, illustrant la nouvelle dynamique positive des Cavs.", gameDay: "Nouvelle équipe", phase: "Saison Régulière", dataIndex: 52 },
+      { game: 82, date: "11/04/2018", opponent: "vs Knicks", stats: "10 pts • 5 reb • 7 ast • Défaite 98-110", title: "Mission accomplie : 82 matchs joués", content: "Pour la première fois de sa carrière, LeBron joue les 82 matchs de la saison régulière. À 33 ans, il termine avec des moyennes de 27.5 points, 8.6 rebonds et 9.1 passes.", gameDay: "Match 82", phase: "Fin de Saison Régulière", dataIndex: 81 },
+      { game: 100, date: "05/05/2018", opponent: "vs Raptors (Game 3)", stats: "38 pts • 6 reb • 7 ast • Victoire 105-103", title: "Le tir impossible contre Toronto", content: "Buzzer beater iconique de LeBron : un floater en courant sur la ligne de fond, banké à la planche. Ce tir donne une avance de 3-0 aux Cavs et brise psychologiquement les Raptors.", gameDay: "G3 vs Raptors", phase: "Playoffs", dataIndex: 99 },
+      { game: 106, date: "27/05/2018", opponent: "vs Celtics (Game 7)", stats: "35 pts • 15 reb • 9 ast • Victoire 87-79", title: "La 8ème finale consécutive", content: "Dans un Game 7 épique à Boston, LeBron, épuisé après avoir joué les 48 minutes, porte les Cavs vers une 8ème finale NBA consécutive, confirmant sa domination sur la Conférence Est.", gameDay: "G7 vs Boston", phase: "Finales de Conférence", dataIndex: 105 },
+      { game: 110, date: "08/06/2018", opponent: "vs Warriors (Game 4)", stats: "33 pts • 10 reb • 11 ast • Défaite 108-85", title: "Fin du parcours 2018", content: "LeBron termine sa saison incroyable avec un dernier triple-double. Les Cavs sont balayés par les Warriors, mais James laisse une trace indélébile avec 34.0 pts, 9.1 reb, 9.0 ast sur l'ensemble des playoffs.", gameDay: "Finale NBA - G4", phase: "Finales NBA", dataIndex: 109 }
     ];
     
     // Fonction pour charger les données réelles
@@ -520,6 +571,7 @@ span.assists {
     // Initialiser le graphique
     function initChart() {
       const data = getGameData();
+      const isMobile = window.innerWidth <= 768;
       
       // Préparer les conteneurs
       const articleContainer = document.getElementById('article-container');
@@ -550,29 +602,31 @@ span.assists {
         .range([0, innerWidth]);
       
       const yScale = d3.scaleLinear()
-        .domain([0, 60])  // Maximum possible pour points/rebonds/passes
+        .domain([0, 60])
         .range([innerHeight, 0]);
       
-      // Texte léger pour saison régulière et playoffs
-      g.append('text')
-        .attr('x', xScale(30))
-        .attr('y', innerHeight - -14)
-        .attr('text-anchor', 'auto')
-        .attr('fill', '#888')
-        .attr('font-size', '14px')
-        .attr('font-weight', '300')
-        .attr('font-style', 'italic')
-        .text('Saison Régulière');
-      
-      g.append('text')
-        .attr('x', xScale(96))
-        .attr('y', innerHeight - -14)
-        .attr('text-anchor', 'auto')
-        .attr('fill', '#888')
-        .attr('font-size', '14px')
-        .attr('font-weight', '300')
-        .attr('font-style', 'italic')
-        .text('Playoffs');
+      // Texte pour saison régulière et playoffs (desktop seulement)
+      if (!isMobile) {
+        g.append('text')
+          .attr('x', xScale(30))
+          .attr('y', innerHeight - -14)
+          .attr('text-anchor', 'auto')
+          .attr('fill', '#888')
+          .attr('font-size', '14px')
+          .attr('font-weight', '300')
+          .attr('font-style', 'italic')
+          .text('Saison Régulière');
+        
+        g.append('text')
+          .attr('x', xScale(96))
+          .attr('y', innerHeight - -14)
+          .attr('text-anchor', 'auto')
+          .attr('fill', '#888')
+          .attr('font-size', '14px')
+          .attr('font-weight', '300')
+          .attr('font-style', 'italic')
+          .text('Playoffs');
+      }
       
       // Ligne verticale pour marquer le début des playoffs
       g.append('line')
@@ -581,45 +635,47 @@ span.assists {
         .attr('y1', 0)
         .attr('y2', innerHeight)
         .attr('stroke', '#666')
-        .attr('stroke-width', 2)
-        .attr('stroke-dasharray', '3,3');
+        .attr('stroke-width', isMobile ? 1 : 2)
+        .attr('stroke-dasharray', '3,3')
+        .attr('opacity', isMobile ? 0.3 : 1);
 
-      // Ajout du label vertical "Début des Playoffs"
-g.append("text")
-  .attr("x", xScale(83) - 10) // Décalé de 15 pixels vers la gauche
-  .attr("y", innerHeight * 0.65)
-  .attr("transform", `rotate(-90, ${xScale(83) - 10}, ${innerHeight * 0.65})`) // Ajuster la rotation en conséquence
-  .attr("font-size", "15px")
-  .attr("fill", "#666")
-  .attr("font-style", "italic")
-  .text("Début des Playoffs");
-
+      // Label "Début des Playoffs" (desktop seulement)
+      if (!isMobile) {
+        g.append("text")
+          .attr("x", xScale(83) - 10)
+          .attr("y", innerHeight * 0.65)
+          .attr("transform", `rotate(-90, ${xScale(83) - 10}, ${innerHeight * 0.65})`)
+          .attr("font-size", "15px")
+          .attr("fill", "#666")
+          .attr("font-style", "italic")
+          .text("Début des Playoffs");
+      }
       
-      // Axe Y seulement (pas d'axe X)
+      // Axe Y
       const yAxis = d3.axisLeft(yScale)
-        .ticks(10)
+        .ticks(isMobile ? 5 : 10)
         .tickSize(-5);
       
       g.append('g')
         .attr('class', 'y-axis')
         .call(yAxis)
-        .call(g => g.select('.domain').remove()); // Supprimer la ligne verticale de l'axe Y
-      
+        .call(g => g.select('.domain').remove())
+        .attr('opacity', isMobile ? 0.3 : 1);
       
       // Définir le générateur de ligne
       const lineGenerator = d3.line()
         .x(d => xScale(d.game))
         .y(d => yScale(d.value))
-        .curve(d3.curveLinear); // Lignes droites entre les points
+        .curve(d3.curveLinear);
       
-      // Couleurs modernes
+      // Couleurs
       const colors = {
-        points: '#FF6B6B',  // Rouge corail
-        rebounds: '#48BB78', // Vert émeraude
-        assists: '#4299E1'   // Bleu azur
+        points: '#FF6B6B',
+        rebounds: '#48BB78',
+        assists: '#4299E1'
       };
       
-      // Ajouter les lignes hachurées pour les moyennes du Top 10
+      // Lignes hachurées pour les moyennes du Top 10
       g.append('line')
         .attr('class', 'top10-line')
         .attr('x1', 0)
@@ -627,7 +683,7 @@ g.append("text")
         .attr('y1', yScale(top10Averages.points))
         .attr('y2', yScale(top10Averages.points))
         .attr('stroke', colors.points)
-        .attr('stroke-opacity', 0.7);
+        .attr('stroke-opacity', isMobile ? 0.3 : 0.7);
       
       g.append('line')
         .attr('class', 'top10-line')
@@ -636,7 +692,7 @@ g.append("text")
         .attr('y1', yScale(top10Averages.assists))
         .attr('y2', yScale(top10Averages.assists))
         .attr('stroke', colors.assists)
-        .attr('stroke-opacity', 0.7);
+        .attr('stroke-opacity', isMobile ? 0.3 : 0.7);
       
       g.append('line')
         .attr('class', 'top10-line')
@@ -645,49 +701,53 @@ g.append("text")
         .attr('y1', yScale(top10Averages.rebounds))
         .attr('y2', yScale(top10Averages.rebounds))
         .attr('stroke', colors.rebounds)
-        .attr('stroke-opacity', 0.7);
+        .attr('stroke-opacity', isMobile ? 0.3 : 0.7);
       
-      // Fonction pour créer une ligne par propriété
+      // Fonction pour créer les segments de ligne
       function createLine(property, color, strokeWidth) {
-  const lineData = data.map(d => ({
-    game: d.game,
-    value: d[property],
-    isPlayoffs: d.isPlayoffs
-  }));
+        const lineData = data.map(d => ({
+          game: d.game,
+          value: d[property],
+          isPlayoffs: d.isPlayoffs
+        }));
 
-  for (let i = 0; i < lineData.length - 1; i++) {
-    const segmentData = [lineData[i], lineData[i + 1]];
+        // Créer un segment pour chaque intervalle entre deux matchs
+        for (let i = 0; i < lineData.length - 1; i++) {
+          const segmentData = [lineData[i], lineData[i + 1]];
 
-    const path = g.append('path')
-      .datum(segmentData)
-      .attr('class', `segment-${property}`)
-      .attr('d', lineGenerator)
-      .attr('stroke', color)
-      .attr('stroke-width', strokeWidth)
-      .attr('fill', 'none')
-      .attr('stroke-opacity', 0.2)
-      .attr('data-game', lineData[i].game);
+          const path = g.append('path')
+            .datum(segmentData)
+            .attr('class', `segment-${property}`)
+            .attr('d', lineGenerator)
+            .attr('stroke', color)
+            .attr('stroke-width', strokeWidth)
+            .attr('fill', 'none')
+            .attr('stroke-opacity', 0.2)
+            .attr('data-game', lineData[i].game)
+            .attr('data-index', i);
 
-    // 🔄 Animation fluide avec stroke-dasharray
-    const totalLength = path.node().getTotalLength();
-    path
-      .attr("stroke-dasharray", totalLength + " " + totalLength)
-      .attr("stroke-dashoffset", totalLength)
-      .transition()
-      .delay(i * 5) // léger décalage pour éviter un effet trop brutal
-      .duration(Math.min(1000, totalLength * 10))
-      .ease(d3.easeLinear)
-      .attr("stroke-dashoffset", 0);
-  }
-}
-
+          // Animation initiale (desktop seulement)
+          if (!isMobile) {
+            const totalLength = path.node().getTotalLength();
+            path
+              .attr("stroke-dasharray", totalLength + " " + totalLength)
+              .attr("stroke-dashoffset", totalLength)
+              .transition()
+              .delay(i * 5)
+              .duration(Math.min(1000, totalLength * 10))
+              .ease(d3.easeLinear)
+              .attr("stroke-dashoffset", 0);
+          }
+        }
+      }
       
       // Créer les trois lignes
-      createLine('points', colors.points, 4);
-      createLine('rebounds', colors.rebounds, 4);
-      createLine('assists', colors.assists, 4);
+      const lineWidth = isMobile ? 2 : 4;
+      createLine('points', colors.points, lineWidth);
+      createLine('rebounds', colors.rebounds, lineWidth);
+      createLine('assists', colors.assists, lineWidth);
       
-      // Créer les templates HTML pour les articles
+      // Créer les articles
       gameEvents.forEach((event, index) => {
         const articleHTML = `
           <div class="article-info" id="article-${index}" style="display: none;">
@@ -698,67 +758,91 @@ g.append("text")
             <p class="article-content">${event.content}</p>
           </div>
         `;
-        
         articleContainer.insertAdjacentHTML('beforeend', articleHTML);
       });
       
       // Fonction de mise à jour au défilement
       function updateVisualization() {
-  const data = getGameData();
-  const totalGames = data.length;
-  const scrollY = window.scrollY;
-  const scrollMax = document.documentElement.scrollHeight - window.innerHeight;
+        const data = getGameData();
+        const totalGames = data.length;
+        const scrollY = window.scrollY || window.pageYOffset;
+        
+        const documentHeight = Math.max(
+          document.body.scrollHeight,
+          document.body.offsetHeight,
+          document.documentElement.clientHeight,
+          document.documentElement.scrollHeight,
+          document.documentElement.offsetHeight
+        );
+        const windowHeight = window.innerHeight;
+        const scrollMax = documentHeight - windowHeight;
+        
+        let scrollProgress = scrollY / scrollMax;
+        if (isNaN(scrollProgress)) scrollProgress = 0;
+        if (scrollProgress > 1) scrollProgress = 1;
+        
+        // Calcul précis du match actuel
+        const matchIndex = Math.min(
+          Math.floor(scrollProgress * totalGames),
+          totalGames - 1
+        );
+        
+        const currentMatch = data[matchIndex];
 
-  const matchIndex = Math.min(
-    Math.floor((scrollY / scrollMax) * totalGames),
-    totalGames - 1
-  );
-  const currentMatch = data[matchIndex];
+        // Mettre à jour les infos du match
+        currentGameDisplay.textContent = "Match " + currentMatch.game;
+        gamePhaseDisplay.textContent = currentMatch.isPlayoffs ? "Playoffs" : "Saison Régulière";
 
-  // Partie 1 : Affichage bas à droite
-  currentGameDisplay.textContent = "Match " + currentMatch.game;
-  gamePhaseDisplay.textContent = currentMatch.isPlayoffs ? "Playoffs" : "Saison Régulière";
+        // Mise à jour du compteur live
+        const liveStatsEl = document.getElementById('live-stats');
+        if (liveStatsEl) {
+          liveStatsEl.querySelector('.points').textContent = `${currentMatch.points} pts`;
+          liveStatsEl.querySelector('.rebounds').textContent = `${currentMatch.rebounds} reb`;
+          liveStatsEl.querySelector('.assists').textContent = `${currentMatch.assists} ast`;
+        }
 
+        // Trouver l'événement actif
+        let activeEventIndex = -1;
+        for (let i = 0; i < gameEvents.length; i++) {
+          if (gameEvents[i].game <= currentMatch.game) {
+            activeEventIndex = i;
+          } else {
+            break;
+          }
+        }
 
-  // ➕ Partie : mise à jour du compteur live
-  const liveStatsEl = document.getElementById('live-stats');
-  if (liveStatsEl) {
-    liveStatsEl.querySelector('.points').textContent = `${currentMatch.points} pts`;
-    liveStatsEl.querySelector('.rebounds').textContent = `${currentMatch.rebounds} reb`;
-    liveStatsEl.querySelector('.assists').textContent = `${currentMatch.assists} ast`;
-  }
+        // Afficher l'article correspondant
+        document.querySelectorAll('.article-info').forEach((el, i) => {
+          el.style.display = i === activeEventIndex ? 'block' : 'none';
+        });
 
-  // Partie 2 : Trouver le dernier événement <= match courant
-  let activeEventIndex = -1;
-  for (let i = 0; i < gameEvents.length; i++) {
-    if (gameEvents[i].game <= currentMatch.game) {
-      activeEventIndex = i;
-    } else {
-      break;
-    }
-  }
+        // Mise à jour des segments
+        document.querySelectorAll('[class^="segment-"]').forEach(segment => {
+          const segmentIndex = parseInt(segment.getAttribute('data-index'));
+          const opacity = matchIndex > segmentIndex ? 1.0 : 0.2;
+          segment.setAttribute('stroke-opacity', opacity);
+        });
+      }
 
-  // Partie 3 : Afficher uniquement l’événement actif
-  document.querySelectorAll('.article-info').forEach((el, i) => {
-    el.style.display = i === activeEventIndex ? 'block' : 'none';
-  });
-
-  // Partie 4 : Révéler les segments
-  document.querySelectorAll('[class^="segment-"]').forEach(segment => {
-    const gameNumber = parseInt(segment.getAttribute('data-game'));
-    const opacity = currentMatch.game > gameNumber ? 1.0 : 0.2;
-    segment.setAttribute('stroke-opacity', opacity);
-  });
-}
-
-      
       // Écouter le défilement
       window.addEventListener('scroll', () => {
         requestAnimationFrame(updateVisualization);
       });
       
+      // Écouteurs tactiles pour mobile
+      window.addEventListener('touchmove', () => {
+        requestAnimationFrame(updateVisualization);
+      });
+
+      window.addEventListener('touchend', () => {
+        requestAnimationFrame(updateVisualization);
+      });
+      
       // Initialiser
-      updateVisualization();
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        updateVisualization();
+      }, 100);
     }
     
     // Lancer quand le DOM est prêt
@@ -768,10 +852,50 @@ g.append("text")
     window.addEventListener('resize', () => {
       const oldSvg = document.querySelector('#chart svg');
       if (oldSvg) oldSvg.remove();
+      
+      // Ajustements responsive
+      const isMobile = window.innerWidth <= 768;
+      const parMatch = document.querySelector('.par-match');
+      
+      if (isMobile) {
+        if (parMatch) parMatch.style.display = 'none';
+        document.querySelectorAll('.chart-title span').forEach(span => {
+          if (!span.classList.contains('par-match')) {
+            span.style.display = 'block';
+            span.style.margin = '5px 0';
+            span.style.width = 'auto';
+          }
+        });
+        
+        document.querySelector('.live-stats').style.position = 'fixed';
+        document.querySelector('.live-stats').style.bottom = '40px';
+        document.querySelector('.live-stats').style.top = 'auto';
+        document.querySelector('.live-stats').style.left = '0';
+        document.querySelector('.live-stats').style.right = '0';
+        
+        const legend = document.querySelector('.legend');
+        if (legend) legend.style.display = 'none';
+      } else {
+        if (parMatch) parMatch.style.display = 'inline';
+        document.querySelectorAll('.chart-title span').forEach(span => {
+          span.style.display = 'inline-block';
+          span.style.margin = '0 0.3em';
+          span.style.width = 'auto';
+        });
+        
+        document.querySelector('.live-stats').style.position = 'absolute';
+        document.querySelector('.live-stats').style.top = '140px';
+        document.querySelector('.live-stats').style.right = '100px';
+        document.querySelector('.live-stats').style.bottom = 'auto';
+        document.querySelector('.live-stats').style.left = 'auto';
+        
+        const legend = document.querySelector('.legend');
+        if (legend) legend.style.display = 'block';
+      }
+      
+      // Redessiner le graphique
       initChart();
     });
-
-
   </script>
 </body>
 </html>
