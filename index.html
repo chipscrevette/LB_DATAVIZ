@@ -208,6 +208,35 @@
   font-weight: 300;
 }
 
+.live-stats {
+  position: absolute;
+  top: 140px;
+  right: 100px;
+  font-size: 20px;
+  font-weight: 400;
+  display: flex;
+  gap: 0.6em;
+}
+
+.live-stats span {
+  padding: 0.2em 0.5em;
+}
+
+span.points {
+  background-color: #FF6B6B;
+  color: white;
+}
+
+span.rebounds {
+  background-color: #48BB78;
+  color: white;
+}
+
+span.assists {
+  background-color: #4299E1;
+  color: white;
+}
+
 
 
   </style>
@@ -241,6 +270,13 @@
         <text x="140" y="45" fill="#666">Moy. Top 10 rebonds (12.07)</text>
       </svg>
     </div>
+
+    <div class="live-stats" id="live-stats">
+      <span class="points">-- pts</span>
+      <span class="rebounds">-- reb</span>
+      <span class="assists">-- ast</span>
+    </div>    
+    
 
     <p class="chart-source">
       Source : <a href="https://www.basketball-reference.com/" target="_blank" rel="noopener">basketball-reference.com</a> | Réalisation : LU CONG SANG Kévin
@@ -682,6 +718,15 @@ g.append("text")
   // Partie 1 : Affichage bas à droite
   currentGameDisplay.textContent = "Match " + currentMatch.game;
   gamePhaseDisplay.textContent = currentMatch.isPlayoffs ? "Playoffs" : "Saison Régulière";
+
+
+  // ➕ Partie : mise à jour du compteur live
+  const liveStatsEl = document.getElementById('live-stats');
+  if (liveStatsEl) {
+    liveStatsEl.querySelector('.points').textContent = `${currentMatch.points} pts`;
+    liveStatsEl.querySelector('.rebounds').textContent = `${currentMatch.rebounds} reb`;
+    liveStatsEl.querySelector('.assists').textContent = `${currentMatch.assists} ast`;
+  }
 
   // Partie 2 : Trouver le dernier événement <= match courant
   let activeEventIndex = -1;
