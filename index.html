@@ -668,52 +668,44 @@ g.append("text")
       
       // Fonction de mise à jour au défilement
       function updateVisualization() {
-        // Calculer la progression du défilement
-        const scrollY = window.scrollY;
-        const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
-        let scrollProgress = Math.min(scrollY / documentHeight, 1);
-        
-        // Empêcher le retour en arrière à la fin
-        if (scrollProgress > 0.95) scrollProgress = 1;
-        
-        // Déterminer l'article actif
-        const articleIndex = Math.min(
-          Math.floor(scrollProgress * gameEvents.length),
-          gameEvents.length - 1
-        );
-        
-        // Mettre à jour l'article et le match
-        document.querySelectorAll('.article-info').forEach((el, i) => {
-          el.style.display = i === articleIndex ? 'block' : 'none';
-        });
-        
-        currentGameDisplay.textContent = gameEvents[articleIndex].gameDay;
-        gamePhaseDisplay.textContent = gameEvents[articleIndex].phase;
-        
-        // Calculer le match à révéler jusqu'à
-        const currentEvent = gameEvents[articleIndex];
-        let nextEvent = articleIndex < gameEvents.length - 1 ? gameEvents[articleIndex + 1] : null;
-        
-        let revealGame;
-        if (nextEvent) {
-          // Progression à l'intérieur du segment actuel
-          const eventSegmentProgress = (scrollProgress * gameEvents.length - articleIndex) / 1;
-          revealGame = currentEvent.game + 
-                       eventSegmentProgress * (nextEvent.game - currentEvent.game);
-        } else {
-          revealGame = currentEvent.game;
-        }
-        
-        // Mettre à jour l'opacité des segments
-        document.querySelectorAll('[class^="segment-"]').forEach(segment => {
-          const gameNumber = parseInt(segment.getAttribute('data-game'));
-          
-          // Exactement 2 états: visible (1.0) ou semi-visible (0.2)
-          const opacity = revealGame >= (gameNumber + 1) ? 1.0 : 0.2;
-segment.setAttribute('stroke-opacity', opacity);
+  const data = getGameData();
+  const totalGames = data.length;
+  const scrollY = window.scrollY;
+  const scrollMax = document.documentElement.scrollHeight - window.innerHeight;
 
-        });
-      }
+  const matchIndex = Math.min(
+    Math.floor((scrollY / scrollMax) * totalGames),
+    totalGames - 1
+  );
+  const currentMatch = data[matchIndex];
+
+  // Partie 1 : Affichage bas à droite
+  currentGameDisplay.textContent = "Match " + currentMatch.game;
+  gamePhaseDisplay.textContent = currentMatch.isPlayoffs ? "Playoffs" : "Saison Régulière";
+
+  // Partie 2 : Trouver le dernier événement <= match courant
+  let activeEventIndex = -1;
+  for (let i = 0; i < gameEvents.length; i++) {
+    if (gameEvents[i].game <= currentMatch.game) {
+      activeEventIndex = i;
+    } else {
+      break;
+    }
+  }
+
+  // Partie 3 : Afficher uniquement l’événement actif
+  document.querySelectorAll('.article-info').forEach((el, i) => {
+    el.style.display = i === activeEventIndex ? 'block' : 'none';
+  });
+
+  // Partie 4 : Révéler les segments
+  document.querySelectorAll('[class^="segment-"]').forEach(segment => {
+    const gameNumber = parseInt(segment.getAttribute('data-game'));
+    const opacity = currentMatch.game > gameNumber ? 1.0 : 0.2;
+    segment.setAttribute('stroke-opacity', opacity);
+  });
+}
+
       
       // Écouter le défilement
       window.addEventListener('scroll', () => {
