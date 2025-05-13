@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LeBron James 2017-2018 : Comparaison avec le Top 10 NBA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Staatliches', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    
+    body {
+      color: #333;
+      background-color: #fff;
+      overflow-x: hidden;
+      font-weight: 400;
+    }
+    
+    .chart-container {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: 10;
+      background-color: #fff;
+    }
+    
+    .chart-header {
+      padding: 20px 20px 0;
+    }
+    
+    .chart-title {
+      font-size: 25px;
+      font-weight: 400;
+      margin-bottom: 4px;
+      letter-spacing: -0.01em;
+    }
+    
+    .chart-title span.points,
+    .chart-title span.rebounds,
+    .chart-title span.assists {
+      display: inline-block;
+      padding: 0.2em 0.5em;
+      margin: 0 0.3em;
+    }
+
+    .chart-title span.points {
+      background-color: #FF6B6B;
+    }
+
+    .chart-title span.rebounds {
+      background-color: #48BB78;
+    }
+
+    .chart-title span.assists {
+      background-color: #4299E1;
+    }
+    
+    .chart-subtitle {
+      font-size: 14px;
+      color: #666;
+      font-weight: 300;
+    }
+    
+    #chart {
+      width: 100%;
+      height: calc(100% - 80px);
+      position: relative;
+    }
+    
+    .article-info {
+      position: absolute;
+      top: 140px;
+      left: 15%;
+      right: 10%;
+      width: 50%;
+      padding: 12px 20px;
+      background: transparent !important; 
+      box-shadow: none !important;
+      font-size: 14px;
+      line-height: 1.3;
+    }
+
+    .article-title {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .game-stats {
+      display: inline-block;
+      margin-right: 15px;
+      font-weight: 500;
+    }
+    
+    .article-date {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+    
+    .article-stats {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 5px;
+      font-weight: 400;
+    }
+    
+    .article-title {
+      font-size: 22px;
+      font-weight: 400;
+      color: #222;
+      margin-bottom: 10px;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+    }
+    
+    .article-content {
+      font-size: 18px;
+      line-height: 1.5;
+      color: #444;
+      margin-bottom: 15px;
+      font-weight: 400;
+    }
+    
+    .game-info {
+      position: absolute;
+      bottom: 30px;
+      right: 40px;
+      text-align: right;
+      z-index: 20;
+    }
+    
+    .current-game {
+      font-size: 24px;
+      color: #222;
+      font-style: italic;
+      font-weight: 300;
+    }
+    
+    .game-phase {
+      font-size: 14px;
+      color: #666;
+      margin-top: -5px;
+      font-weight: 300;
+    }
+    
+    .y-axis path {
+      stroke: none;
+    }
+    
+    .y-axis line {
+      stroke: #f0f0f0;
+      stroke-width: 1;
+    }
+    
+    .y-axis text {
+      fill: #aaa;
+      font-size: 11px;
+      font-weight: 300;
+    }
+    
+    .grid-line {
+      stroke: #f8f8f8;
+      stroke-width: 1;
+    }
+    
+    .scroll-spacer {
+      height: 100vh;
+    }
+    
+    .end-spacer {
+      height: 50vh;
+    }
+
+    .legend {
+      position: absolute;
+      top: 80px;
+      right: 10px;
+      font-size: 18px;
+      color: #666;
+    }
+
+    .top10-line {
+      stroke-dasharray: 5,5;
+      stroke-width: 3;
+      stroke-opacity: 0.5;
+    }
+
+    .chart-source a {
+  text-decoration: underline dotted;
+  color: #666;
+}
+
+.chart-source {
+  position: absolute;
+  bottom: 10px;
+  left: 20px;
+  font-size: 11px;
+  color: #666;
+  font-style: italic;
+  font-weight: 300;
+}
+
+
+
+  </style>
+</head>
+<body>
+  <div class="chart-container">
+    <div class="chart-header">
+      <h1 class="chart-title">
+        LeBron James 2017-2018 : <span class="points">Points</span>, <span class="rebounds">Rebonds</span> et <span class="assists">Passes</span> par match
+      </h1>
+      <p class="chart-subtitle">Comparaison avec les moyennes du Top 10 NBA dans chaque catégorie</p>
+    </div>
+
+    
+    <div id="chart"></div>
+    
+    <div id="article-container"></div>
+    
+    <div class="game-info">
+      <div id="current-game" class="current-game"></div>
+      <div id="game-phase" class="game-phase"></div>
+    </div>
+
+    <div class="legend">
+      <svg width="400" height="80">
+        <line x1="100" y1="10" x2="130" y2="10" stroke="#FF6B6B" stroke-width="3" stroke-dasharray="5,5" stroke-opacity="0.5"></line>
+        <text x="140" y="15" fill="#666">Moy. Top 10 points (26.22)</text>
+        <line x1="100" y1="25" x2="130" y2="25" stroke="#4299E1" stroke-width="3" stroke-dasharray="5,5" stroke-opacity="0.5"></line>
+        <text x="140" y="30" fill="#666">Moy. Top 10 passes (8.03)</text>
+        <line x1="100" y1="40" x2="130" y2="40" stroke="#48BB78" stroke-width="3" stroke-dasharray="5,5" stroke-opacity="0.5"></line>
+        <text x="140" y="45" fill="#666">Moy. Top 10 rebonds (12.07)</text>
+      </svg>
+    </div>
+
+    <p class="chart-source">
+      Source : <a href="https://www.basketball-reference.com/" target="_blank" rel="noopener">basketball-reference.com</a> | Réalisation : LU CONG SANG Kévin
+    </p>    
+    
+  </div>
+
+  <!-- Le reste du scroll -->
+  <div class="scroll-spacer"></div>
+  <div class="scroll-spacer"></div>
+  <div class="scroll-spacer"></div>
+  <div class="scroll-spacer"></div>
+  <div class="scroll-spacer"></div>
+  <div class="end-spacer"></div>
+  
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  
+  <script>
+    // Moyennes du Top 10 NBA
+    const top10Averages = {
+      points: 26.22,    // Moyenne du Top 10 marqueurs (James Harden leader à 30.4)
+      assists: 8.03,   // Moyenne du Top 10 passeurs (Russell Westbrook leader à 10.3)
+      rebounds: 12.07   // Moyenne du Top 10 rebondeurs (Andre Drummond leader à 16.0)
+    };
+
+    // Points importants de la saison 2017-18 de LeBron
+    const gameEvents = [
+      {
+        game: 1,
+        date: "17/10/2017",
+        opponent: "vs Boston Celtics",
+        stats: "29 pts • 16 reb • 9 ast • Victoire 102-99",
+        title: "Ouverture de saison dramatique",
+        content: "LeBron retrouve Kyrie Irving, qui l'a quitté pendant l'été, mais la soirée est marquée par la terrible blessure de Gordon Hayward. Malgré un triple-double frôlé, les Cavs s'imposent face aux Celtics.",
+        gameDay: "Opening Night",
+        phase: "Saison Régulière",
+        dataIndex: 0
+      },
+      {
+        game: 9,
+        date: "03/11/2017",
+        opponent: "vs Washington Wizards",
+        stats: "57 pts • 11 reb • 7 ast • Victoire 130-122",
+        title: "Explosion offensive contre Washington",
+        content: "Performance historique de LeBron avec 57 points (23/34 aux tirs), son 2ème meilleur total en carrière. Il démontre qu'il reste une force offensive dominante malgré les changements dans l'effectif des Cavs.",
+        gameDay: "Match 9",
+        phase: "Saison Régulière",
+        dataIndex: 8
+      },
+      {
+        game: 28,
+        date: "14/12/2017",
+        opponent: "vs Lakers",
+        stats: "25 pts • 12 reb • 12 ast • Victoire 121-112",
+        title: "Une série de victoires impressionnante",
+        content: "LeBron enregistre son 59e triple-double en carrière contre les Lakers. Les Cavs sont au milieu d'une série de 13 victoires consécutives qui redresse leur saison après un début difficile.",
+        gameDay: "Match 28",
+        phase: "Saison Régulière",
+        dataIndex: 27
+      },
+      {
+        game: 53,
+        date: "07/02/2018",
+        opponent: "vs Minnesota",
+        stats: "37 pts • 10 reb • 15 ast • Victoire 140-138 (OT)",
+        title: "Métamorphose après la trade deadline",
+        content: "Avec une équipe totalement remaniée après les trades, LeBron semble libéré. Il réalise un triple-double avec 37 points et 15 passes, illustrant la nouvelle dynamique positive des Cavs.",
+        gameDay: "Nouvelle équipe",
+        phase: "Saison Régulière",
+        dataIndex: 52
+      },
+      {
+        game: 82,
+        date: "11/04/2018",
+        opponent: "vs Knicks",
+        stats: "10 pts • 5 reb • 7 ast • Défaite 98-110",
+        title: "Mission accomplie : 82 matchs joués",
+        content: "Pour la première fois de sa carrière, LeBron joue les 82 matchs de la saison régulière. À 33 ans, il termine avec des moyennes de 27.5 points, 8.6 rebonds et 9.1 passes.",
+        gameDay: "Match 82",
+        phase: "Fin de Saison Régulière",
+        dataIndex: 81
+      },
+      {
+        game: 100,
+        date: "05/05/2018",
+        opponent: "vs Raptors (Game 3)",
+        stats: "38 pts • 6 reb • 7 ast • Victoire 105-103",
+        title: "Le tir impossible contre Toronto",
+        content: "Buzzer beater iconique de LeBron : un floater en courant sur la ligne de fond, banké à la planche. Ce tir donne une avance de 3-0 aux Cavs et brise psychologiquement les Raptors.",
+        gameDay: "G3 vs Raptors",
+        phase: "Playoffs",
+        dataIndex: 99
+      },
+      {
+        game: 106,
+        date: "27/05/2018",
+        opponent: "vs Celtics (Game 7)",
+        stats: "35 pts • 15 reb • 9 ast • Victoire 87-79",
+        title: "La 8ème finale consécutive",
+        content: "Dans un Game 7 épique à Boston, LeBron, épuisé après avoir joué les 48 minutes, porte les Cavs vers une 8ème finale NBA consécutive, confirmant sa domination sur la Conférence Est.",
+        gameDay: "G7 vs Boston",
+        phase: "Finales de Conférence",
+        dataIndex: 105
+      },
+      {
+      game: 110,
+      date: "08/06/2018",
+      opponent: "vs Warriors (Game 4)",
+      stats: "33 pts • 10 reb • 11 ast • Défaite 108-85",
+      title: "Fin du parcours 2018",
+      content: "LeBron termine sa saison incroyable avec un dernier triple-double. Les Cavs sont balayés par les Warriors, mais James laisse une trace indélébile avec 34.0 pts, 9.1 reb, 9.0 ast sur l’ensemble des playoffs.",
+      gameDay: "Finale NBA - G4",
+      phase: "Finales NBA",
+      dataIndex: 109
+    }
+    ];
+    
+    // Fonction pour charger les données réelles
+    function getGameData() {
+      // Saison régulière (matchs 1-82)
+      const regularSeason = [
+        {game:1, points:29, rebounds:16, assists:9, isPlayoffs:false},
+        {game:2, points:24, rebounds:5, assists:10, isPlayoffs:false},
+        {game:3, points:22, rebounds:4, assists:2, isPlayoffs:false},
+        {game:4, points:34, rebounds:2, assists:13, isPlayoffs:false},
+        {game:5, points:29, rebounds:10, assists:13, isPlayoffs:false},
+        {game:6, points:18, rebounds:3, assists:8, isPlayoffs:false},
+        {game:7, points:16, rebounds:10, assists:7, isPlayoffs:false},
+        {game:8, points:33, rebounds:6, assists:11, isPlayoffs:false},
+        {game:9, points:57, rebounds:11, assists:7, isPlayoffs:false},
+        {game:10, points:26, rebounds:5, assists:13, isPlayoffs:false},
+        {game:11, points:30, rebounds:8, assists:9, isPlayoffs:false},
+        {game:12, points:33, rebounds:4, assists:7, isPlayoffs:false},
+        {game:13, points:19, rebounds:11, assists:4, isPlayoffs:false},
+        {game:14, points:23, rebounds:9, assists:12, isPlayoffs:false},
+        {game:15, points:31, rebounds:6, assists:8, isPlayoffs:false},
+        {game:16, points:39, rebounds:14, assists:6, isPlayoffs:false},
+        {game:17, points:18, rebounds:2, assists:8, isPlayoffs:false},
+        {game:18, points:33, rebounds:6, assists:5, isPlayoffs:false},
+        {game:19, points:27, rebounds:16, assists:13, isPlayoffs:false},
+        {game:20, points:30, rebounds:13, assists:6, isPlayoffs:false},
+        {game:21, points:21, rebounds:12, assists:6, isPlayoffs:false},
+        {game:22, points:24, rebounds:6, assists:12, isPlayoffs:false},
+        {game:23, points:34, rebounds:2, assists:12, isPlayoffs:false},
+        {game:24, points:23, rebounds:7, assists:6, isPlayoffs:false},
+        {game:25, points:32, rebounds:8, assists:6, isPlayoffs:false},
+        {game:26, points:25, rebounds:12, assists:12, isPlayoffs:false},
+        {game:27, points:25, rebounds:12, assists:12, isPlayoffs:false},
+        {game:28, points:25, rebounds:12, assists:12, isPlayoffs:false},
+        {game:29, points:20, rebounds:6, assists:12, isPlayoffs:false},
+        {game:30, points:29, rebounds:11, assists:10, isPlayoffs:false},
+        {game:31, points:20, rebounds:11, assists:15, isPlayoffs:false},
+        {game:32, points:39, rebounds:1, assists:7, isPlayoffs:false},
+        {game:33, points:34, rebounds:6, assists:9, isPlayoffs:false},
+        {game:34, points:20, rebounds:6, assists:6, isPlayoffs:false},
+        {game:35, points:16, rebounds:10, assists:14, isPlayoffs:false},
+        {game:36, points:29, rebounds:8, assists:6, isPlayoffs:false},
+        {game:37, points:24, rebounds:6, assists:8, isPlayoffs:false},
+        {game:38, points:19, rebounds:7, assists:6, isPlayoffs:false},
+        {game:39, points:10, rebounds:8, assists:5, isPlayoffs:false},
+        {game:40, points:26, rebounds:10, assists:5, isPlayoffs:false},
+        {game:41, points:17, rebounds:10, assists:6, isPlayoffs:false},
+        {game:42, points:27, rebounds:8, assists:11, isPlayoffs:false},
+        {game:43, points:32, rebounds:8, assists:6, isPlayoffs:false},
+        {game:44, points:16, rebounds:5, assists:6, isPlayoffs:false},
+        {game:45, points:18, rebounds:7, assists:14, isPlayoffs:false},
+        {game:46, points:28, rebounds:7, assists:7, isPlayoffs:false},
+        {game:47, points:26, rebounds:10, assists:11, isPlayoffs:false},
+        {game:48, points:25, rebounds:8, assists:14, isPlayoffs:false},
+        {game:49, points:21, rebounds:6, assists:7, isPlayoffs:false},
+        {game:50, points:24, rebounds:11, assists:5, isPlayoffs:false},
+        {game:51, points:11, rebounds:9, assists:9, isPlayoffs:false},
+        {game:52, points:25, rebounds:10, assists:5, isPlayoffs:false},
+        {game:53, points:37, rebounds:10, assists:15, isPlayoffs:false},
+        {game:54, points:22, rebounds:12, assists:19, isPlayoffs:false},
+        {game:55, points:24, rebounds:8, assists:10, isPlayoffs:false},
+        {game:56, points:37, rebounds:8, assists:8, isPlayoffs:false},
+        {game:57, points:32, rebounds:8, assists:6, isPlayoffs:false},
+        {game:58, points:18, rebounds:14, assists:11, isPlayoffs:false},
+        {game:59, points:33, rebounds:13, assists:9, isPlayoffs:false},
+        {game:60, points:31, rebounds:12, assists:11, isPlayoffs:false},
+        {game:61, points:30, rebounds:9, assists:8, isPlayoffs:false},
+        {game:62, points:25, rebounds:10, assists:15, isPlayoffs:false},
+        {game:63, points:31, rebounds:7, assists:7, isPlayoffs:false},
+        {game:64, points:39, rebounds:8, assists:10, isPlayoffs:false},
+        {game:65, points:25, rebounds:10, assists:6, isPlayoffs:false},
+        {game:66, points:24, rebounds:10, assists:8, isPlayoffs:false},
+        {game:67, points:28, rebounds:12, assists:11, isPlayoffs:false},
+        {game:68, points:35, rebounds:7, assists:17, isPlayoffs:false},
+        {game:69, points:33, rebounds:13, assists:9, isPlayoffs:false},
+        {game:70, points:40, rebounds:12, assists:10, isPlayoffs:false},
+        {game:71, points:35, rebounds:7, assists:17, isPlayoffs:false},
+        {game:72, points:27, rebounds:9, assists:11, isPlayoffs:false},
+        {game:73, points:37, rebounds:10, assists:8, isPlayoffs:false},
+        {game:74, points:18, rebounds:6, assists:7, isPlayoffs:false},
+        {game:75, points:41, rebounds:10, assists:8, isPlayoffs:false},
+        {game:76, points:27, rebounds:9, assists:11, isPlayoffs:false},
+        {game:77, points:16, rebounds:13, assists:12, isPlayoffs:false},
+        {game:78, points:27, rebounds:10, assists:6, isPlayoffs:false},
+        {game:79, points:33, rebounds:9, assists:14, isPlayoffs:false},
+        {game:80, points:44, rebounds:11, assists:11, isPlayoffs:false},
+        {game:81, points:26, rebounds:6, assists:11, isPlayoffs:false},
+        {game:82, points:10, rebounds:5, assists:7, isPlayoffs:false}
+      ];
+      
+      // Playoffs (matchs 83-110)
+      const playoffs = [
+        {game:83, points:24, rebounds:10, assists:12, isPlayoffs:true},
+        {game:84, points:46, rebounds:12, assists:5, isPlayoffs:true},
+        {game:85, points:28, rebounds:12, assists:8, isPlayoffs:true},
+        {game:86, points:32, rebounds:13, assists:7, isPlayoffs:true},
+        {game:87, points:44, rebounds:10, assists:8, isPlayoffs:true},
+        {game:88, points:22, rebounds:6, assists:7, isPlayoffs:true},
+        {game:89, points:45, rebounds:9, assists:7, isPlayoffs:true},
+        {game:90, points:35, rebounds:15, assists:9, isPlayoffs:true},
+        {game:91, points:43, rebounds:8, assists:14, isPlayoffs:true},
+        {game:92, points:27, rebounds:5, assists:12, isPlayoffs:true},
+        {game:93, points:38, rebounds:6, assists:7, isPlayoffs:true},
+        {game:94, points:26, rebounds:11, assists:13, isPlayoffs:true},
+        {game:95, points:42, rebounds:10, assists:12, isPlayoffs:true},
+        {game:96, points:28, rebounds:13, assists:11, isPlayoffs:true},
+        {game:97, points:46, rebounds:11, assists:9, isPlayoffs:true},
+        {game:98, points:26, rebounds:10, assists:5, isPlayoffs:true},
+        {game:99, points:42, rebounds:10, assists:12, isPlayoffs:true},
+        {game:100, points:38, rebounds:6, assists:7, isPlayoffs:true},
+        {game:101, points:26, rebounds:10, assists:5, isPlayoffs:true},
+        {game:102, points:29, rebounds:8, assists:11, isPlayoffs:true},
+        {game:103, points:44, rebounds:5, assists:3, isPlayoffs:true},
+        {game:104, points:28, rebounds:13, assists:11, isPlayoffs:true},
+        {game:105, points:35, rebounds:15, assists:9, isPlayoffs:true},
+        {game:106, points:35, rebounds:15, assists:9, isPlayoffs:true},
+        {game:107, points:51, rebounds:8, assists:8, isPlayoffs:true},
+        {game:108, points:29, rebounds:9, assists:13, isPlayoffs:true},
+        {game:109, points:33, rebounds:10, assists:11, isPlayoffs:true},
+        {game:110, points:33, rebounds:10, assists:11, isPlayoffs:true}
+      ];
+      
+      return [...regularSeason, ...playoffs];
+    }
+    
+    // Initialiser le graphique
+    function initChart() {
+      const data = getGameData();
+      
+      // Préparer les conteneurs
+      const articleContainer = document.getElementById('article-container');
+      const currentGameDisplay = document.getElementById('current-game');
+      const gamePhaseDisplay = document.getElementById('game-phase');
+      
+      // Configuration du graphique
+      const chartDiv = document.getElementById('chart');
+      const width = chartDiv.clientWidth;
+      const height = chartDiv.clientHeight;
+      const margin = { top: 20, right: 40, bottom: 40, left: 50 };
+      const innerWidth = width - margin.left - margin.right;
+      const innerHeight = height - margin.top - margin.bottom;
+      
+      // Créer le SVG
+      const svg = d3.select('#chart')
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height);
+      
+      // Groupe principal
+      const g = svg.append('g')
+        .attr('transform', `translate(${margin.left}, ${margin.top})`);
+      
+      // Échelles
+      const xScale = d3.scaleLinear()
+        .domain([1, data.length])
+        .range([0, innerWidth]);
+      
+      const yScale = d3.scaleLinear()
+        .domain([0, 60])  // Maximum possible pour points/rebonds/passes
+        .range([innerHeight, 0]);
+      
+      // Texte léger pour saison régulière et playoffs
+      g.append('text')
+        .attr('x', xScale(30))
+        .attr('y', innerHeight - -14)
+        .attr('text-anchor', 'auto')
+        .attr('fill', '#888')
+        .attr('font-size', '14px')
+        .attr('font-weight', '300')
+        .attr('font-style', 'italic')
+        .text('Saison Régulière');
+      
+      g.append('text')
+        .attr('x', xScale(96))
+        .attr('y', innerHeight - -14)
+        .attr('text-anchor', 'auto')
+        .attr('fill', '#888')
+        .attr('font-size', '14px')
+        .attr('font-weight', '300')
+        .attr('font-style', 'italic')
+        .text('Playoffs');
+      
+      // Ligne verticale pour marquer le début des playoffs
+      g.append('line')
+        .attr('x1', xScale(83))
+        .attr('x2', xScale(83))
+        .attr('y1', 0)
+        .attr('y2', innerHeight)
+        .attr('stroke', '#666')
+        .attr('stroke-width', 2)
+        .attr('stroke-dasharray', '3,3');
+
+      // Ajout du label vertical "Début des Playoffs"
+g.append("text")
+  .attr("x", xScale(83) - 10) // Décalé de 15 pixels vers la gauche
+  .attr("y", innerHeight * 0.65)
+  .attr("transform", `rotate(-90, ${xScale(83) - 10}, ${innerHeight * 0.65})`) // Ajuster la rotation en conséquence
+  .attr("font-size", "15px")
+  .attr("fill", "#666")
+  .attr("font-style", "italic")
+  .text("Début des Playoffs");
+
+      
+      // Axe Y seulement (pas d'axe X)
+      const yAxis = d3.axisLeft(yScale)
+        .ticks(10)
+        .tickSize(-5);
+      
+      g.append('g')
+        .attr('class', 'y-axis')
+        .call(yAxis)
+        .call(g => g.select('.domain').remove()); // Supprimer la ligne verticale de l'axe Y
+      
+      
+      // Définir le générateur de ligne
+      const lineGenerator = d3.line()
+        .x(d => xScale(d.game))
+        .y(d => yScale(d.value))
+        .curve(d3.curveLinear); // Lignes droites entre les points
+      
+      // Couleurs modernes
+      const colors = {
+        points: '#FF6B6B',  // Rouge corail
+        rebounds: '#48BB78', // Vert émeraude
+        assists: '#4299E1'   // Bleu azur
+      };
+      
+      // Ajouter les lignes hachurées pour les moyennes du Top 10
+      g.append('line')
+        .attr('class', 'top10-line')
+        .attr('x1', 0)
+        .attr('x2', innerWidth)
+        .attr('y1', yScale(top10Averages.points))
+        .attr('y2', yScale(top10Averages.points))
+        .attr('stroke', colors.points)
+        .attr('stroke-opacity', 0.7);
+      
+      g.append('line')
+        .attr('class', 'top10-line')
+        .attr('x1', 0)
+        .attr('x2', innerWidth)
+        .attr('y1', yScale(top10Averages.assists))
+        .attr('y2', yScale(top10Averages.assists))
+        .attr('stroke', colors.assists)
+        .attr('stroke-opacity', 0.7);
+      
+      g.append('line')
+        .attr('class', 'top10-line')
+        .attr('x1', 0)
+        .attr('x2', innerWidth)
+        .attr('y1', yScale(top10Averages.rebounds))
+        .attr('y2', yScale(top10Averages.rebounds))
+        .attr('stroke', colors.rebounds)
+        .attr('stroke-opacity', 0.7);
+      
+      // Fonction pour créer une ligne par propriété
+      function createLine(property, color, strokeWidth) {
+  const lineData = data.map(d => ({
+    game: d.game,
+    value: d[property],
+    isPlayoffs: d.isPlayoffs
+  }));
+
+  for (let i = 0; i < lineData.length - 1; i++) {
+    const segmentData = [lineData[i], lineData[i + 1]];
+
+    const path = g.append('path')
+      .datum(segmentData)
+      .attr('class', `segment-${property}`)
+      .attr('d', lineGenerator)
+      .attr('stroke', color)
+      .attr('stroke-width', strokeWidth)
+      .attr('fill', 'none')
+      .attr('stroke-opacity', 0.2)
+      .attr('data-game', lineData[i].game);
+
+    // 🔄 Animation fluide avec stroke-dasharray
+    const totalLength = path.node().getTotalLength();
+    path
+      .attr("stroke-dasharray", totalLength + " " + totalLength)
+      .attr("stroke-dashoffset", totalLength)
+      .transition()
+      .delay(i * 5) // léger décalage pour éviter un effet trop brutal
+      .duration(Math.min(1000, totalLength * 10))
+      .ease(d3.easeLinear)
+      .attr("stroke-dashoffset", 0);
+  }
+}
+
+      
+      // Créer les trois lignes
+      createLine('points', colors.points, 4);
+      createLine('rebounds', colors.rebounds, 4);
+      createLine('assists', colors.assists, 4);
+      
+      // Créer les templates HTML pour les articles
+      gameEvents.forEach((event, index) => {
+        const articleHTML = `
+          <div class="article-info" id="article-${index}" style="display: none;">
+            <div class="article-date">${event.date}</div>
+            <div class="article-stats">${event.opponent}</div>
+            <div class="article-stats">${event.stats}</div>
+            <h2 class="article-title">${event.title}</h2>
+            <p class="article-content">${event.content}</p>
+          </div>
+        `;
+        
+        articleContainer.insertAdjacentHTML('beforeend', articleHTML);
+      });
+      
+      // Fonction de mise à jour au défilement
+      function updateVisualization() {
+        // Calculer la progression du défilement
+        const scrollY = window.scrollY;
+        const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+        let scrollProgress = Math.min(scrollY / documentHeight, 1);
+        
+        // Empêcher le retour en arrière à la fin
+        if (scrollProgress > 0.95) scrollProgress = 1;
+        
+        // Déterminer l'article actif
+        const articleIndex = Math.min(
+          Math.floor(scrollProgress * gameEvents.length),
+          gameEvents.length - 1
+        );
+        
+        // Mettre à jour l'article et le match
+        document.querySelectorAll('.article-info').forEach((el, i) => {
+          el.style.display = i === articleIndex ? 'block' : 'none';
+        });
+        
+        currentGameDisplay.textContent = gameEvents[articleIndex].gameDay;
+        gamePhaseDisplay.textContent = gameEvents[articleIndex].phase;
+        
+        // Calculer le match à révéler jusqu'à
+        const currentEvent = gameEvents[articleIndex];
+        let nextEvent = articleIndex < gameEvents.length - 1 ? gameEvents[articleIndex + 1] : null;
+        
+        let revealGame;
+        if (nextEvent) {
+          // Progression à l'intérieur du segment actuel
+          const eventSegmentProgress = (scrollProgress * gameEvents.length - articleIndex) / 1;
+          revealGame = currentEvent.game + 
+                       eventSegmentProgress * (nextEvent.game - currentEvent.game);
+        } else {
+          revealGame = currentEvent.game;
+        }
+        
+        // Mettre à jour l'opacité des segments
+        document.querySelectorAll('[class^="segment-"]').forEach(segment => {
+          const gameNumber = parseInt(segment.getAttribute('data-game'));
+          
+          // Exactement 2 états: visible (1.0) ou semi-visible (0.2)
+          const opacity = revealGame >= (gameNumber + 1) ? 1.0 : 0.2;
+segment.setAttribute('stroke-opacity', opacity);
+
+        });
+      }
+      
+      // Écouter le défilement
+      window.addEventListener('scroll', () => {
+        requestAnimationFrame(updateVisualization);
+      });
+      
+      // Initialiser
+      updateVisualization();
+    }
+    
+    // Lancer quand le DOM est prêt
+    document.addEventListener('DOMContentLoaded', initChart);
+    
+    // Reconstruire lors du redimensionnement
+    window.addEventListener('resize', () => {
+      const oldSvg = document.querySelector('#chart svg');
+      if (oldSvg) oldSvg.remove();
+      initChart();
+    });
+
+
+  </script>
+</body>
+</html>
