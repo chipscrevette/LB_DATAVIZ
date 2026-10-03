@@ -2,79 +2,81 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LeBron James 2017-2018 : Comparaison avec le Top 10 NBA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LeBron James 2017-18</title>
+  <meta name="description" content="La saison 2017-18 de LeBron James racontée match par match : points, rebonds et passes face aux moyennes du Top 10 NBA.">
+  <meta name="color-scheme" content="light">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Staatliches&family=Geist:wght@400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
-  <div class="chart-container">
-    <div class="chart-header">
-      <h1 class="chart-title">
-        LEBRON JAMES 2017-2018
-        <span class="points">POINTS</span>
-        <span class="rebounds">REBONDS</span>
-        <span class="assists">PASSES</span>
-        <span class="par-match">PAR MATCH</span>
-      </h1>
-      <p class="chart-subtitle">COMPARAISON AVEC LES MOYENNES DU TOP 10 NBA DANS CHAQUE CATÉGORIE</p>
-    </div>
+  <section class="scrolly" id="recit" aria-label="La saison match par match">
+    <div class="stage">
+      <header class="stage-header">
+        <h1 class="title">
+          <span class="title-name">LeBron James 2017-18</span>
+          <span class="tag" data-stat="pts">Points</span>
+          <span class="tag" data-stat="reb">Rebonds</span>
+          <span class="tag" data-stat="ast">Passes</span>
+          <span class="title-per">par match</span>
+        </h1>
+        <p class="subtitle">Comparaison avec les moyennes du Top 10 NBA dans chaque catégorie</p>
+      </header>
 
-    <div id="chart"></div>
-    <div id="article-container"></div>
-    
-    <div class="game-info">
-      <div id="current-game" class="current-game"></div>
-      <div id="game-phase" class="game-phase"></div>
-    </div>
+      <div class="chart" id="chart" role="img" aria-label="Points, rebonds et passes de LeBron James pour chacun des 104 matchs de la saison 2017-18, comparés aux moyennes du Top 10 de la ligue."></div>
 
-    <div class="legend">
-      <svg width="400" height="80">
-        <line x1="100" y1="10" x2="130" y2="10" stroke="#FF6B6B" stroke-width="3" stroke-dasharray="5,5" stroke-opacity="0.5"></line>
-        <text x="140" y="15" fill="#666">Moy. Top 10 points (26.22)</text>
-        <line x1="100" y1="25" x2="130" y2="25" stroke="#4299E1" stroke-width="3" stroke-dasharray="5,5" stroke-opacity="0.5"></line>
-        <text x="140" y="30" fill="#666">Moy. Top 10 passes (8.03)</text>
-        <line x1="100" y1="40" x2="130" y2="40" stroke="#48BB78" stroke-width="3" stroke-dasharray="5,5" stroke-opacity="0.5"></line>
-        <text x="140" y="45" fill="#666">Moy. Top 10 rebonds (12.07)</text>
-      </svg>
-    </div>
+      <article class="story" id="story" aria-live="polite"></article>
 
-    <div class="legend-container">
-      <div class="legend-item">
-        <div class="legend-line" style="background-color: #FF6B6B; opacity: 0.5;"></div>
-        <div class="legend-text">Moy. Top 10 points (26.22)</div>
+      <div class="counter" aria-hidden="true">
+        <div class="counter-game" id="counter-game">Match 0</div>
+        <div class="counter-phase" id="counter-phase">Saison régulière</div>
       </div>
-      <div class="legend-item">
-        <div class="legend-line" style="background-color: #4299E1; opacity: 0.5;"></div>
-        <div class="legend-text">Moy. Top 10 passes (8.03)</div>
-      </div>
-      <div class="legend-item">
-        <div class="legend-line" style="background-color: #48BB78; opacity: 0.5;"></div>
-        <div class="legend-text">Moy. Top 10 rebonds (12.07)</div>
-      </div>
+
+      <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+      <div class="tooltip" id="tooltip" hidden></div>
     </div>
 
-    <div class="live-stats" id="live-stats">
-      <span class="points">-- pts</span>
-      <span class="rebounds">-- reb</span>
-      <span class="assists">-- ast</span>
-    </div>    
-    
-    <p class="chart-source">
-      Source : <a href="https://www.basketball-reference.com/" target="_blank" rel="noopener">basketball-reference.com</a> | Réalisation : LU CONG SANG Kévin
-    </p>    
-  </div>
+    <div class="steps" id="steps" aria-hidden="true"></div>
+  </section>
 
-  <div class="scroll-spacer"></div>
-  <div class="scroll-spacer"></div>
-  <div class="scroll-spacer"></div>
-  <div class="scroll-spacer"></div>
-  <div class="scroll-spacer"></div>
-  <div class="end-spacer"></div>
-  
-  <script src="https://d3js.org/d3.v7.min.js"></script>
-  <script src="script.js"></script>
+  <section class="summary" aria-labelledby="bilan-title">
+    <h2 class="summary-title" id="bilan-title">
+      Combien de soirs au niveau
+      <span class="tag" data-stat="pts">du Top 10</span> ?
+    </h2>
+    <p class="section-lead">Chaque case est un match. Elle se colore quand LeBron dépasse la moyenne du Top 10 de la ligue dans la catégorie.</p>
+    <div class="waffles" id="waffles"></div>
+
+    <h2 class="summary-title summary-sub">Plus fort quand ça compte</h2>
+    <p class="section-lead">Moyennes par match, saison régulière puis playoffs.</p>
+    <div class="compare" id="compare"></div>
+
+    <dl class="tiles" id="tiles"></dl>
+  </section>
+
+  <section class="data-table">
+    <details>
+      <summary>Les 104 matchs, en tableau</summary>
+      <div class="table-scroll">
+        <table id="table">
+          <thead>
+            <tr><th scope="col">N°</th><th scope="col">Date</th><th scope="col">Adversaire</th><th scope="col">Min</th><th scope="col">Pts</th><th scope="col">Reb</th><th scope="col">Pas</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </details>
+  </section>
+
+  <footer class="footer">
+    <p>Source : feuilles de match officielles NBA, saison 2017-18 (<a href="https://www.basketball-reference.com/players/j/jamesle01/gamelog/2018" target="_blank" rel="noopener">basketball-reference.com</a>). Moyennes du Top 10 : les dix meilleurs joueurs de la ligue dans chaque catégorie.</p>
+    <p>Réalisation : Lu Cong Sang Kévin</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+  <script src="assets/data.js"></script>
+  <script src="assets/main.js"></script>
 </body>
 </html>
